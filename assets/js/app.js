@@ -629,8 +629,8 @@
     return `
       <form id="syncForm" class="sync-form" autocomplete="off">
         <div class="row2">
-          <label class="fld"><span>GitHub owner / org</span><input name="owner" required value="${esc(c.owner || '')}" placeholder="InsaneAbhi07"></label>
-          <label class="fld"><span>Data repo</span><input name="repo" required value="${esc(c.repo || '')}" placeholder="nexttgen-tasks-data"></label>
+          <label class="fld"><span>GitHub owner / org</span><input name="owner" required value="${esc(c.owner || 'InsaneAbhi07')}"></label>
+          <label class="fld"><span>Data repo</span><input name="repo" required value="${esc(c.repo || 'nexttgen-tasks-data')}"></label>
         </div>
         <div class="row2">
           <label class="fld"><span>Branch</span><input name="branch" value="${esc(c.branch || 'main')}"></label>
