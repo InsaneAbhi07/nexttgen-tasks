@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NexttGen Team Tasks</title>
+  <meta name="description" content="NexttGen Software Technologies — team to-do list, reminders and history.">
+  <meta name="theme-color" content="#0B5CFF">
+  <link rel="icon" href="assets/img/ng-icon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    // apply saved theme before paint to avoid a flash
+    try { var t = JSON.parse(localStorage.getItem('ng.theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <!-- Login / Register (static so it always shows) -->
+  <div id="auth" class="auth">
+    <aside class="auth-side">
+      <div class="auth-logo-card"><img src="assets/img/nexttgen-logo.png" alt="NexttGen Software Technologies"></div>
+      <div class="auth-pitch">
+        <h2>Plan the day.<br>Ship together.</h2>
+        <p>The NexttGen team board: everyone's tasks by date, reminders before deadlines, and a full history of what got done.</p>
+        <ul>
+          <li><span>1</span>See today and the next few days for the whole team</li>
+          <li><span>2</span>Get reminded before tasks are due</li>
+          <li><span>3</span>Look back at who did what, and when</li>
+        </ul>
+      </div>
+      <p class="auth-copy">© NexttGen Software Technologies</p>
+      <div class="pixels" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    </aside>
+
+    <main class="auth-main">
+    <div class="auth-box">
+      <img class="auth-logo" src="assets/img/nexttgen-logo.png" alt="NexttGen Software Technologies">
+      <h1 id="authTitle">Welcome back</h1>
+      <p class="auth-sub" id="authSub">Login to see what the team is working on.</p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" class="on" data-auth="login" role="tab">Login</button>
+        <button type="button" data-auth="register" role="tab">Sign up</button>
+      </div>
+
+      <form id="loginForm" autocomplete="on" novalidate>
+        <label class="fld"><span>Username</span>
+          <input name="username" autocomplete="username" placeholder="e.g. abhishek" autocapitalize="none" spellcheck="false"></label>
+        <label class="fld"><span>Password</span>
+          <input name="password" type="password" autocomplete="current-password" placeholder="Your password"></label>
+        <p class="form-err" role="alert"></p>
+        <button class="btn primary block lg">Login</button>
+        <p class="switch">New here? <button type="button" class="link" data-auth="register">Create an account</button></p>
+      </form>
+
+      <form id="registerForm" autocomplete="on" novalidate hidden>
+        <label class="fld"><span>Your name</span>
+          <input name="name" autocomplete="name" placeholder="e.g. Abhishek Singh"></label>
+        <label class="fld"><span>Username</span>
+          <input name="username" autocomplete="username" placeholder="e.g. abhishek" autocapitalize="none" spellcheck="false"></label>
+        <label class="fld"><span>Password</span>
+          <input name="password" type="password" autocomplete="new-password" placeholder="Choose a password"></label>
+        <p class="form-err" role="alert"></p>
+        <button class="btn primary block lg">Sign up</button>
+        <p class="switch">Already have an account? <button type="button" class="link" data-auth="login">Login</button></p>
+      </form>
+
+      <div class="auth-foot" id="authFoot"></div>
+    </div>
+    </main>
+  </div>
+  <div id="app" class="app" hidden></div>
+  <div id="modal-root"></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/smart.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# original source images (copies live in assets/img)
+/NexttGen.png
+/WhatsApp Image*.jpeg
+
+node_modules/
+.DS_Store
+Thumbs.db
