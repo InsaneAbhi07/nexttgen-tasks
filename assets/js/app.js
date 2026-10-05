@@ -145,10 +145,16 @@
     $('#loginForm').hidden = !login;
     $('#registerForm').hidden = login;
     $$('#auth .tabs button').forEach(b => b.classList.toggle('on', b.dataset.auth === S.authMode));
-    $('#authFoot').innerHTML = noUsers && !Store.isRemote()
+    const warn = !Store.isRemote() && isHosted()
+      ? `<p class="auth-warn"><b>Not connected to the team workspace.</b> Accounts and tasks made now stay only in this browser and are lost when Chrome clears site data. <button type="button" class="link" data-action="open-sync">Connect Team sync</button> or open your invite link first.</p>`
+      : '';
+    $('#authFoot').innerHTML = warn + (noUsers && !Store.isRemote()
       ? `<p>First time? <button type="button" class="link" data-action="seed">Load a demo team</button> and login as <b>rohit</b> / <b>nexttgen</b>.</p>`
-      : `<p class="muted">${syncLabel()} · <button type="button" class="link" data-action="open-sync">${Store.isRemote() ? 'Change' : 'Team sync'}</button></p>`;
+      : `<p class="muted">${syncLabel()} · <button type="button" class="link" data-action="open-sync">${Store.isRemote() ? 'Change' : 'Team sync'}</button></p>`);
   }
+
+  // Served from GitHub Pages or another real host (not a local file / localhost demo).
+  const isHosted = () => /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 
   async function handleAuth(form) {
     const register = form.id === 'registerForm';
@@ -163,7 +169,15 @@
     if (!username) { err.textContent = 'Please enter a username.'; return; }
     if (!password) { err.textContent = 'Please enter a password.'; return; }
 
-    if (Store.isRemote()) await Store.sync(); // pick up colleagues who registered elsewhere
+    if (register && !Store.isRemote() && isHosted()) {
+      err.textContent = 'Connect Team sync first. Otherwise this account is saved only in this browser and will disappear.';
+      $('[data-action="open-sync"]')?.click();
+      return;
+    }
+    if (Store.isRemote()) {
+      await Store.sync(); // pick up colleagues who registered elsewhere
+      if (register && Store.status.state === 'error') { err.textContent = `Team sync failed: ${Store.status.error}`; return; }
+    }
     if (register) {
       if (Store.userByUsername(username)) { err.textContent = 'That username is taken. Try another, or login.'; return; }
       const salt = Store.uid();
@@ -1047,7 +1061,7 @@
         const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch, path: c.path, token: c.token }))));
         const url = `${location.origin}${location.pathname}#join=${payload}`;
         await navigator.clipboard.writeText(url).catch(() => {});
-        toast('Invite link copied. Send it privately to teammates.', 'ok'); break;
+        toast('Invite link copied. Bookmark it yourself too: if Chrome clears site data, opening it reconnects this browser. Send it only privately.', 'ok'); break;
       }
       case 'enable-notif': {
         const p = await Notification.requestPermission();
